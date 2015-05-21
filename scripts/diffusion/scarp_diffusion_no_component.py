@@ -1,7 +1,7 @@
 #Import statements so that you will have access to the necessary methods
 import numpy
 from landlab import RasterModelGrid
-from landlab.plot.imshow import imshow_node_grid, imshow_core_node_grid
+from landlab.plot.imshow import imshow_node_grid
 from pylab import show, figure
 
 #Create a raster grid with 25 rows, 40 columns, and cell spacing of 10 m
