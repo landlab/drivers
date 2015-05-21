@@ -11,7 +11,7 @@ mg = RasterModelGrid(25, 40, 10.0)
 
 #Create a field of node data (an array) on the grid called elevation.  
 #Initially populate this array with zero values.
-z = mg.add_zeros('node', 'topographic_elevation')
+z = mg.add_zeros('node', 'elevation')
 
 #Check the size of the array
 len(z)
