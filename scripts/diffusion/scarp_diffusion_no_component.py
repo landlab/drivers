@@ -1,4 +1,4 @@
-#Import statements so that you will have access to the necessary methods
+#Import statements so that you will have access to the necessary functions
 import numpy
 from landlab import RasterModelGrid
 from landlab.plot.imshow import imshow_node_grid
