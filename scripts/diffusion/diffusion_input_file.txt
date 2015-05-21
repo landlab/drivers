@@ -1,0 +1,8 @@
+DIFMOD_KD: in m2 per year
+0.01  
+uplift_rate: rate in m/yr across entire grid
+0.0
+dt: in years
+2000.0
+values_to_diffuse: name of field objects to diffuse
+elevation
