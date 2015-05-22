@@ -53,7 +53,7 @@ for i in xrange(nt):
     #mg = diffuse.diffuse(mg, i*dt)
     mg = lin_diffuse.diffuse(dt)
     mg = fr.route_flow()
-    mg = sp.erode(mg)
+    mg = sp.erode(mg, dt)
     mg.at_node['topographic__elevation'][mg.core_nodes] += uplift_per_step
     
     ##plot long profiles along channels
