@@ -22,9 +22,9 @@ mg = RasterModelGrid(nrows, ncols, dx)
 mg.set_closed_boundaries_at_grid_edges(True,True,True,True)
 
 #create the fields in the grid
-mg.create_node_array_zeros('topographic_elevation')
+mg.create_node_array_zeros('topographic__elevation')
 z = mg.create_node_array_zeros() + init_elev
-mg.at_node[ 'topographic_elevation'] = z + numpy.random.rand(len(z))/1000.
+mg.at_node[ 'topographic__elevation'] = z + numpy.random.rand(len(z))/1000.
 
 # Display a message
 print( 'Running ...' )
@@ -39,7 +39,7 @@ while elapsed_time < time_to_run:
     print elapsed_time
     if elapsed_time+dt<time_to_run:
         diffusion_component.input_timestep(dt)
-    mg.at_node['topographic_elevation'][mg.active_nodes[:(mg.active_nodes.shape[0]//2.)]] += uplift*dt #half block uplift
+    mg.at_node['topographic__elevation'][mg.active_nodes[:(mg.active_nodes.shape[0]//2.)]] += uplift*dt #half block uplift
     
     mg = diffusion_component.diffuse(mg, elapsed_time)
     elapsed_time += dt
@@ -52,10 +52,10 @@ pylab.close()
 
 # Plot topography
 pylab.figure(1)
-im = imshow_node_grid(mg, 'topographic_elevation')
+im = imshow_node_grid(mg, 'topographic__elevation')
 pylab.title('Topography')
 
-elev_r = mg.node_vector_to_raster(mg.at_node['topographic_elevation'])
+elev_r = mg.node_vector_to_raster(mg.at_node['topographic__elevation'])
 pylab.figure(2)
 im = pylab.plot(dx*numpy.arange(nrows), elev_r[:,int(ncols//2)])  # display a colored image
 pylab.title('Vertical cross section')

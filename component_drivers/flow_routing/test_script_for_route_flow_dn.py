@@ -18,7 +18,7 @@ outlet_column = 38
 
 # Read in a DEM and set its boundaries
 DATA_FILE = os.path.join(os.path.dirname(__file__), dem_name)
-(grid, z) = read_esri_ascii(DATA_FILE, name='topographic_elevation')
+(grid, z) = read_esri_ascii(DATA_FILE, name='topographic__elevation')
 grid.set_nodata_nodes_to_closed(z, 0.) # set nodata nodes to inactive bounds
 outlet_node = grid.grid_coords_to_node_id(outlet_row, outlet_column)
 
@@ -37,7 +37,7 @@ pylab.xlabel('Distance (m)')
 pylab.ylabel('Distance (m)')
 
 pylab.figure(2)
-im = imshow_node_grid(grid, 'topographic_elevation')
+im = imshow_node_grid(grid, 'topographic__elevation')
 pylab.title('DEM')
 pylab.xlabel('Distance (m)')
 pylab.ylabel('Distance (m)')

@@ -27,9 +27,9 @@ uplift_rate = inputs.read_float('uplift_rate')
 mg = RasterModelGrid(nrows, ncols, dx)
 
 #create the fields in the grid
-mg.create_node_array_zeros('topographic_elevation')
+mg.create_node_array_zeros('topographic__elevation')
 z = mg.create_node_array_zeros() + init_elev
-mg['node'][ 'topographic_elevation'] = z + np.random.rand(len(z))/1000.
+mg['node'][ 'topographic__elevation'] = z + np.random.rand(len(z))/1000.
 
 mg.set_fixed_value_boundaries_at_grid_edges(True, True, True, True)
 
@@ -44,14 +44,14 @@ while elapsed_time < time_to_run:
         print "Short step!"
         dt = time_to_run - elapsed_time
     dfn.diffuse(dt)
-    mg.at_node['topographic_elevation'][mg.core_nodes] += uplift_rate*dt
+    mg.at_node['topographic__elevation'][mg.core_nodes] += uplift_rate*dt
     elapsed_time += dt
 
 pylab.figure(1)
-im = imshow_node_grid(mg, 'topographic_elevation')  # display a colored image
+im = imshow_node_grid(mg, 'topographic__elevation')  # display a colored image
 
 pylab.figure(2)
-im2 = pylab.plot(mg.node_vector_to_raster(mg.at_node['topographic_elevation'])[:,ncols//2])
+im2 = pylab.plot(mg.node_vector_to_raster(mg.at_node['topographic__elevation'])[:,ncols//2])
 pylab.xlabel('Horizontal distance')
 pylab.ylabel('Elevation')
 pylab.title('Cross section')
