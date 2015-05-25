@@ -141,7 +141,8 @@ def Plot_( grid, VegType, yrs, yr_step=10 ):
         pic += 1
         plt.figure(pic)
         imshow_grid(grid,VegType[year],values_at = 'cell', cmap=cmap, \
-                         grid_units=('m', 'm'), norm=norm, limits = [0,5])
+                         grid_units=('m', 'm'), norm=norm, limits = [0,5] ,\
+                         allow_colorbar = False)
         plt.title(filename)
         plt.savefig(filename)
 
