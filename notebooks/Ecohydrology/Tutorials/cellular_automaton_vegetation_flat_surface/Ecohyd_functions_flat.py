@@ -135,6 +135,7 @@ def Plot_( grid, VegType, yrs, yr_step=10 ):
     norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
 
     print 'Plotting cellular field of Plant Functional Type'
+    print 'Green - Grass; Red - Shrubs; Black - Trees; White - Bare'
     ## Plot images to make gif.
     for year in range(0,yrs,yr_step):
         filename = 'Year = ' +  "%05d" % year
