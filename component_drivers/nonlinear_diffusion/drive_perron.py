@@ -6,19 +6,18 @@ from landlab.components.nonlinear_diffusion.Perron_nl_diffuse import PerronNLDif
 import pylab
 import time
 
-
 inputs = ModelParameterDictionary('./drive_perron_params.txt')
 nrows = inputs.read_int('nrows')
 ncols = inputs.read_int('ncols')
 dx = inputs.read_float('dx')
 dt = inputs.read_float('dt')
 time_to_run = inputs.read_float('run_time')
-#nt needs defining
+# nt needs defining
 uplift = inputs.read_float('uplift_rate')
 init_elev = inputs.read_float('init_elev')
 
 mg = RasterModelGrid(nrows, ncols, dx)
-#mg.set_looped_boundaries(True, True)
+# mg.set_looped_boundaries(True, True)
 mg.set_closed_boundaries_at_grid_edges(True,True,True,True)
 
 #create the fields in the grid
@@ -40,7 +39,7 @@ while elapsed_time < time_to_run:
     if elapsed_time+dt<time_to_run:
         diffusion_component.input_timestep(dt)
     mg.at_node['topographic__elevation'][mg.active_nodes[:(mg.active_nodes.shape[0]//2.)]] += uplift*dt #half block uplift
-    
+
     mg = diffusion_component.diffuse(mg, elapsed_time)
     elapsed_time += dt
 
