@@ -8,7 +8,7 @@ dx:
 dt:
 1.
 uplift_rate: #per time, not per timestep
-0.1
+30.
 run_time:
 30
 init_elev:
@@ -22,4 +22,9 @@ sed_density:
 kappa:
 50000.
 S_crit:
+0.56
+
+nonlinear_diffusivity:
+50000.
+critical_diffusive_gradient:
 0.56
