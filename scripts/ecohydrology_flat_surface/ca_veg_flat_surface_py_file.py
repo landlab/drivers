@@ -26,7 +26,7 @@ grid = RasterModelGrid((5, 4), spacing=(5., 5.))
 data = load_params('inputs_vegetation_ca.yaml')
 
 (precip_dry, precip_wet, radiation, pet_tree, pet_shrub,
- pet_grass, soil_moisture, VEG, vegca) = initialize(data, grid, grid1)
+ pet_grass, soil_moisture, vegetation, vegca) = initialize(data, grid, grid1)
 
 n_years = 2000 # Approx number of years for model to run
 
@@ -98,7 +98,7 @@ for i in range(n):
             # 0 corresponds to ETThresholddown (end growing season)
 
     # Update vegetation component
-    VEG.update(PETThreshold_switch=PET_threshold, Tb=Tb[i], Tr=Tr[i])
+    vegetation.update(PETThreshold_switch=PET_threshold, Tb=Tb[i], Tr=Tr[i])
 
     # Update yearly cumulative water stress data
     WS += (grid['cell']['vegetation__water_stress']) * Tb[i] / 24.

@@ -77,7 +77,7 @@ def initialize(data, grid, grid1):
                                             MeanTmaxF=data['MeanTmaxF_grass'],
                                             delta_d=data['DeltaD'])
     soil_moisture = SoilMoisture(grid, **data) # Soil Moisture object
-    VEG = Vegetation(grid, **data) # Vegetation object
+    vegetation = Vegetation(grid, **data) # Vegetation object
     vegca = VegCA(grid1, **data) # Cellular automaton object
 
     # Initializing inputs for Soil Moisture object
@@ -87,7 +87,7 @@ def initialize(data, grid, grid1):
         0.59 * np.ones(grid.number_of_cells))
 
     return (precip_dry, precip_wet, radiation, pet_tree, pet_shrub,
-            pet_grass, soil_moisture, VEG, vegca)
+            pet_grass, soil_moisture, vegetation, vegca)
 
 
 def empty_arrays(n, grid, grid1):
