@@ -107,7 +107,7 @@ def empty_arrays(n, grid, grid1):
     return P, Tb, Tr, Time, VegType, PET_, Rad_Factor, EP30, PET_threshold
 
 
-def create_PET_lookup(radiation, pet_tree, pet_shrub, pet_grass, PET_,
+def create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass, PET_,
                       Rad_Factor, EP30, grid):
     for i in range(0, 365):
         pet_tree.update(float(i) / 365.25)

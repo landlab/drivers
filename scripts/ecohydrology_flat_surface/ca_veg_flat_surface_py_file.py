@@ -16,7 +16,7 @@ import numpy as np
 
 from landlab import RasterModelGrid, load_params
 from ecohyd_functions_flat import (initialize, empty_arrays,
-                                   create_PET_lookup, save, plot)
+                                   create_pet_lookup, save, plot)
 
 
 grid1 = RasterModelGrid((100, 100), spacing=(5., 5.))
@@ -43,7 +43,7 @@ n = int(n_years * (no_of_storms_wet + no_of_storms_dry))
 P, Tb, Tr, Time, VegType, PET_, Rad_Factor, EP30, PET_threshold = empty_arrays(
     n, grid, grid1)
 
-create_PET_lookup(radiation, pet_tree, pet_shrub, pet_grass,  PET_, Rad_Factor,
+create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass,  PET_, Rad_Factor,
                   EP30, grid)
 
 # Represent current time in years
