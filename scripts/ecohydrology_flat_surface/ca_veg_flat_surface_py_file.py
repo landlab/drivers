@@ -26,7 +26,7 @@ grid = RasterModelGrid((5, 4), spacing=(5., 5.))
 data = load_params('inputs_vegetation_ca.yaml')
 
 (precip_dry, precip_wet, radiation, pet_tree,
- PET_Shrub, PET_Grass, SM, VEG, vegca) = initialize(data, grid, grid1)
+ pet_shrub, pet_grass, SM, VEG, vegca) = initialize(data, grid, grid1)
 
 n_years = 2000 # Approx number of years for model to run
 
@@ -43,7 +43,7 @@ n = int(n_years * (no_of_storms_wet + no_of_storms_dry))
 P, Tb, Tr, Time, VegType, PET_, Rad_Factor, EP30, PET_threshold = empty_arrays(
     n, grid, grid1)
 
-create_PET_lookup(radiation, pet_tree, PET_Shrub, PET_Grass,  PET_, Rad_Factor,
+create_PET_lookup(radiation, pet_tree, pet_shrub, pet_grass,  PET_, Rad_Factor,
                   EP30, grid)
 
 # Represent current time in years
