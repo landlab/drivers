@@ -25,8 +25,8 @@ grid = RasterModelGrid((5, 4), spacing=(5., 5.))
 # Create dictionary that holds the inputs
 data = load_params('inputs_vegetation_ca.yaml')
 
-(precip_dry, precip_wet, radiation, pet_tree,
- pet_shrub, pet_grass, SM, VEG, vegca) = initialize(data, grid, grid1)
+(precip_dry, precip_wet, radiation, pet_tree, pet_shrub,
+ pet_grass, soil_moisture, VEG, vegca) = initialize(data, grid, grid1)
 
 n_years = 2000 # Approx number of years for model to run
 
@@ -86,7 +86,7 @@ for i in range(n):
     grid['cell']['rainfall__daily'] = P[i] * np.ones(grid.number_of_cells)
 
     # Update soil moisture component
-    current_time = SM.update(current_time, Tr=Tr[i], Tb=Tb[i])
+    current_time = soil_moisture.update(current_time, Tr=Tr[i], Tb=Tb[i])
 
     # Decide whether its growing season or not
     if Julian != 364:
