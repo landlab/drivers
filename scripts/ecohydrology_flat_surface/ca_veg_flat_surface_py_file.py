@@ -25,8 +25,8 @@ grid = RasterModelGrid((5, 4), spacing=(5., 5.))
 # Create dictionary that holds the inputs
 data = load_params('inputs_vegetation_ca.yaml')
 
-PD_D, PD_W, Rad, PET_Tree, PET_Shrub, PET_Grass, SM, VEG, vegca = initialize(
-    data, grid, grid1)
+(precip_dry, precip_wet, Rad, PET_Tree,
+ PET_Shrub, PET_Grass, SM, VEG, vegca) = initialize(data, grid, grid1)
 
 n_years = 2000 # Approx number of years for model to run
 
@@ -68,15 +68,15 @@ for i in range(n):
     # Generate seasonal storms
     # Wet Season - Jul to Sep - NA Monsoon
     if data['doy__start_of_monsoon'] <= Julian <= data['doy__end_of_monsoon']:
-        PD_W.update()
-        P[i] = PD_W.storm_depth
-        Tr[i] = PD_W.storm_duration
-        Tb[i] = PD_W.interstorm_duration
+        precip_wet.update()
+        P[i] = precip_wet.storm_depth
+        Tr[i] = precip_wet.storm_duration
+        Tb[i] = precip_wet.interstorm_duration
     else: # for Dry season
-        PD_D.update()
-        P[i] = PD_D.storm_depth
-        Tr[i] = PD_D.storm_duration
-        Tb[i] = PD_D.interstorm_duration
+        precip_dry.update()
+        P[i] = precip_dry.storm_depth
+        Tr[i] = precip_dry.storm_duration
+        Tb[i] = precip_dry.interstorm_duration
 
     # Spatially distribute PET and its 30-day-mean (analogous to degree day)
     grid.at_cell['surface__potential_evapotranspiration_rate'] = PET_[Julian]

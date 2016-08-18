@@ -57,11 +57,11 @@ def initialize(data, grid, grid1):
         1700. * np.ones(grid1.number_of_nodes))
     grid['node']['topographic__elevation'] = (
         1700. * np.ones(grid.number_of_nodes))
-    PD_D = PrecipitationDistribution(
+    precip_dry = PrecipitationDistribution(
         mean_storm_duration=data['mean_storm_dry'],
         mean_interstorm_duration=data['mean_interstorm_dry'],
         mean_storm_depth=data['mean_storm_depth_dry'])
-    PD_W = PrecipitationDistribution(
+    precip_wet = PrecipitationDistribution(
         mean_storm_duration=data['mean_storm_wet'],
         mean_interstorm_duration=data['mean_interstorm_wet'],
         mean_storm_depth=data['mean_storm_depth_wet'])
@@ -86,7 +86,8 @@ def initialize(data, grid, grid1):
     grid.at_cell['soil_moisture__initial_saturation_fraction'] = (
         0.59 * np.ones(grid.number_of_cells))
 
-    return PD_D, PD_W, Rad, PET_Tree, PET_Shrub, PET_Grass, SM, VEG, vegca
+    return (precip_dry, precip_wet, Rad, PET_Tree, PET_Shrub, PET_Grass, SM,
+            VEG, vegca)
 
 
 def empty_arrays(n, grid, grid1):
