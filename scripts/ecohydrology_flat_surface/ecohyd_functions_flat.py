@@ -66,7 +66,7 @@ def initialize(data, grid, grid1):
         mean_interstorm_duration=data['mean_interstorm_wet'],
         mean_storm_depth=data['mean_storm_depth_wet'])
 
-    Rad = Radiation(grid)
+    radiation = Radiation(grid)
     PET_Tree = PotentialEvapotranspiration(grid, method=data['PET_method'],
                                            MeanTmaxF=data['MeanTmaxF_tree'],
                                            delta_d=data['DeltaD'])
@@ -86,8 +86,8 @@ def initialize(data, grid, grid1):
     grid.at_cell['soil_moisture__initial_saturation_fraction'] = (
         0.59 * np.ones(grid.number_of_cells))
 
-    return (precip_dry, precip_wet, Rad, PET_Tree, PET_Shrub, PET_Grass, SM,
-            VEG, vegca)
+    return (precip_dry, precip_wet, radiation, PET_Tree, PET_Shrub,
+            PET_Grass, SM, VEG, vegca)
 
 
 def empty_arrays(n, grid, grid1):
@@ -107,7 +107,7 @@ def empty_arrays(n, grid, grid1):
     return P, Tb, Tr, Time, VegType, PET_, Rad_Factor, EP30, PET_threshold
 
 
-def create_PET_lookup(Rad, PET_Tree, PET_Shrub, PET_Grass, PET_,
+def create_PET_lookup(radiation, PET_Tree, PET_Shrub, PET_Grass, PET_,
                       Rad_Factor, EP30, grid):
     for i in range(0, 365):
         PET_Tree.update(float(i) / 365.25)
@@ -116,7 +116,7 @@ def create_PET_lookup(Rad, PET_Tree, PET_Shrub, PET_Grass, PET_,
         PET_[i] = [PET_Grass._PET_value, PET_Shrub._PET_value,
                    PET_Tree._PET_value, 0., PET_Shrub._PET_value,
                    PET_Tree._PET_value]
-        Rad.update(float(i) / 365.25)
+        radiation.update(float(i) / 365.25)
         Rad_Factor[i] = grid.at_cell['radiation__ratio_to_flat_surface']
 
         if i < 30:
