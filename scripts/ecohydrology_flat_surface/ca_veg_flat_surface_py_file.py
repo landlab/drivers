@@ -40,11 +40,11 @@ no_of_storms_dry = 8760 * (fraction_dry) / (data['mean_interstorm_dry'] +
                                             data['mean_storm_dry'])
 n = int(n_years * (no_of_storms_wet + no_of_storms_dry))
 
-P, Tb, Tr, Time, VegType, PET_, Rad_Factor, EP30, PET_threshold = empty_arrays(
-    n, grid, grid1)
+(P, Tb, Tr, Time, VegType, daily_pet, Rad_Factor,
+ EP30, PET_threshold) = empty_arrays(n, grid, grid1)
 
-create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass,  PET_, Rad_Factor,
-                  EP30, grid)
+create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass,  daily_pet,
+                  Rad_Factor, EP30, grid)
 
 # Represent current time in years
 current_time = 0 # Start from first day of Jan
@@ -79,7 +79,7 @@ for i in range(n):
         Tb[i] = precip_dry.interstorm_duration
 
     # Spatially distribute PET and its 30-day-mean (analogous to degree day)
-    grid.at_cell['surface__potential_evapotranspiration_rate'] = PET_[Julian]
+    grid.at_cell['surface__potential_evapotranspiration_rate'] = daily_pet[Julian]
     grid.at_cell['surface__potential_evapotranspiration_30day_mean'] = EP30[Julian]
 
     # Assign spatial rainfall data

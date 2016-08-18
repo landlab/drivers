@@ -98,22 +98,22 @@ def empty_arrays(n, grid, grid1):
 
     # Cumulative Water Stress
     VegType = np.empty([n / 55, grid1.number_of_cells], dtype=int)
-    PET_ = np.zeros([365, grid.number_of_cells])
+    daily_pet = np.zeros([365, grid.number_of_cells])
     Rad_Factor = np.empty([365, grid.number_of_cells])
     EP30 = np.empty([365, grid.number_of_cells])
 
     # 30 day average PET to determine season
     PET_threshold = 0  # Initializing PET_threshold to ETThresholddown
-    return P, Tb, Tr, Time, VegType, PET_, Rad_Factor, EP30, PET_threshold
+    return P, Tb, Tr, Time, VegType, daily_pet, Rad_Factor, EP30, PET_threshold
 
 
-def create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass, PET_,
+def create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass, daily_pet,
                       Rad_Factor, EP30, grid):
     for i in range(0, 365):
         pet_tree.update(float(i) / 365.25)
         pet_shrub.update(float(i) / 365.25)
         pet_grass.update(float(i) / 365.25)
-        PET_[i] = [pet_grass._PET_value, pet_shrub._PET_value,
+        daily_pet[i] = [pet_grass._PET_value, pet_shrub._PET_value,
                    pet_tree._PET_value, 0., pet_shrub._PET_value,
                    pet_tree._PET_value]
         radiation.update(float(i) / 365.25)
@@ -121,11 +121,11 @@ def create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass, PET_,
 
         if i < 30:
             if i == 0:
-                EP30[0] = PET_[0]
+                EP30[0] = daily_pet[0]
             else:
-                EP30[i] = np.mean(PET_[:i], axis=0)
+                EP30[i] = np.mean(daily_pet[:i], axis=0)
         else:
-            EP30[i] = np.mean(PET_[i-30:i], axis=0)
+            EP30[i] = np.mean(daily_pet[i - 30:i], axis=0)
 
 
 def save(sim, Tb, Tr, P, VegType, yrs, Time_Consumed, Time):
