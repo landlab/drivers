@@ -83,7 +83,7 @@ for i in range(n):
     grid.at_cell['surface__potential_evapotranspiration_30day_mean'] = EP30[julian]
 
     # Assign spatial rainfall data
-    grid.at_cell['rainfall__daily'] = np.full(grid.number_of_cells, precip[i])
+    grid.at_cell['rainfall__daily_depth'] = np.full(grid.number_of_cells, precip[i])
 
     # Update soil moisture component
     current_time = soil_moisture.update(current_time, Tr=storm_dt[i],
