@@ -41,7 +41,7 @@ no_of_storms_dry = 8760 * (fraction_dry) / (data['mean_interstorm_dry'] +
 n = int(n_years * (no_of_storms_wet + no_of_storms_dry))
 
 (P, Tb, Tr, Time, veg_type, daily_pet, rad_factor,
- EP30, PET_threshold) = empty_arrays(n, grid, grid1)
+ EP30, pet_threshold) = empty_arrays(n, grid, grid1)
 
 create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass,  daily_pet,
                   rad_factor, EP30, grid)
@@ -91,14 +91,14 @@ for i in range(n):
     # Decide whether its growing season or not
     if Julian != 364:
         if EP30[Julian + 1, 0] > EP30[Julian, 0]:
-            PET_threshold = 1
+            pet_threshold = 1
             # 1 corresponds to ETThresholdup (begin growing season)
         else:
-            PET_threshold = 0
+            pet_threshold = 0
             # 0 corresponds to ETThresholddown (end growing season)
 
     # Update vegetation component
-    vegetation.update(PETThreshold_switch=PET_threshold, Tb=Tb[i], Tr=Tr[i])
+    vegetation.update(PETThreshold_switch=pet_threshold, Tb=Tb[i], Tr=Tr[i])
 
     # Update yearly cumulative water stress data
     WS += (grid['cell']['vegetation__water_stress']) * Tb[i] / 24.

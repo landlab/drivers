@@ -103,9 +103,9 @@ def empty_arrays(n, grid, grid1):
     EP30 = np.empty([365, grid.number_of_cells])
 
     # 30 day average PET to determine season
-    PET_threshold = 0  # Initializing PET_threshold to ETThresholddown
+    pet_threshold = 0  # Initializing pet_threshold to ETThresholddown
     return (P, Tb, Tr, Time, veg_type, daily_pet, rad_factor, EP30,
-            PET_threshold)
+            pet_threshold)
 
 
 def create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass, daily_pet,
