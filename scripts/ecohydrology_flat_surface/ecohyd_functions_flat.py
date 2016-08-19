@@ -97,14 +97,15 @@ def empty_arrays(n, grid, grid1):
     Time = np.empty(n) # To record time elapsed from the start of simulation
 
     # Cumulative Water Stress
-    VegType = np.empty([n / 55, grid1.number_of_cells], dtype=int)
+    veg_type = np.empty([n / 55, grid1.number_of_cells], dtype=int)
     daily_pet = np.zeros([365, grid.number_of_cells])
     Rad_Factor = np.empty([365, grid.number_of_cells])
     EP30 = np.empty([365, grid.number_of_cells])
 
     # 30 day average PET to determine season
     PET_threshold = 0  # Initializing PET_threshold to ETThresholddown
-    return P, Tb, Tr, Time, VegType, daily_pet, Rad_Factor, EP30, PET_threshold
+    return (P, Tb, Tr, Time, veg_type, daily_pet, Rad_Factor, EP30,
+            PET_threshold)
 
 
 def create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass, daily_pet,
@@ -128,17 +129,17 @@ def create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass, daily_pet,
             EP30[i] = np.mean(daily_pet[i - 30:i], axis=0)
 
 
-def save(sim, Tb, Tr, P, VegType, yrs, Time_Consumed, Time):
+def save(sim, Tb, Tr, P, veg_type, yrs, Time_Consumed, Time):
     np.save(sim + '_Tb', Tb)
     np.save(sim + '_Tr', Tr)
     np.save(sim + '_P', P)
-    np.save(sim + '_VegType', VegType)
+    np.save(sim + '_VegType', veg_type)
     np.save(sim + '_Years', yrs)
     np.save(sim + '_Time_Consumed_minutes', Time_Consumed)
     np.save(sim + '_CurrentTime', Time)
 
 
-def plot(sim, grid, VegType, yrs, yr_step=10):
+def plot(sim, grid, veg_type, yrs, yr_step=10):
     pic = 0
     years = range(0, yrs)
     cmap = mpl.colors.ListedColormap(
@@ -153,7 +154,7 @@ def plot(sim, grid, VegType, yrs, yr_step=10):
         filename = 'year_' + "%05d" % year
         pic += 1
         plt.figure(pic, figsize=(10, 8))
-        imshow_grid(grid, VegType[year], values_at='cell', cmap=cmap,
+        imshow_grid(grid, veg_type[year], values_at='cell', cmap=cmap,
                     grid_units=('m', 'm'), norm=norm, limits=[0, 5],
                     allow_colorbar=False)
         plt.title(filename, weight='bold', fontsize=22)
@@ -166,15 +167,15 @@ def plot(sim, grid, VegType, yrs, yr_step=10):
     grass_cov = np.empty(yrs)
     shrub_cov = np.empty(yrs)
     tree_cov = np.empty(yrs)
-    grid_size = float(VegType.shape[1])
+    grid_size = float(veg_type.shape[1])
 
     for x in range(0, yrs):
-        grass_cov[x] = (VegType[x][VegType[x] == GRASS].size / grid_size) * 100
-        shrub_cov[x] = ((VegType[x][VegType[x] == SHRUB].size / grid_size) *
-                        100 + (VegType[x][VegType[x] == SHRUBSEEDLING].size /
+        grass_cov[x] = (veg_type[x][veg_type[x] == GRASS].size / grid_size) * 100
+        shrub_cov[x] = ((veg_type[x][veg_type[x] == SHRUB].size / grid_size) *
+                        100 + (veg_type[x][veg_type[x] == SHRUBSEEDLING].size /
                         grid_size) * 100)
-        tree_cov[x] = ((VegType[x][VegType[x] == TREE].size / grid_size) *
-                       100 + (VegType[x][VegType[x] == TREESEEDLING].size /
+        tree_cov[x] = ((veg_type[x][veg_type[x] == TREE].size / grid_size) *
+                       100 + (veg_type[x][veg_type[x] == TREESEEDLING].size /
                        grid_size) * 100)
 
     pic += 1

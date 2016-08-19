@@ -40,7 +40,7 @@ no_of_storms_dry = 8760 * (fraction_dry) / (data['mean_interstorm_dry'] +
                                             data['mean_storm_dry'])
 n = int(n_years * (no_of_storms_wet + no_of_storms_dry))
 
-(P, Tb, Tr, Time, VegType, daily_pet, Rad_Factor,
+(P, Tb, Tr, Time, veg_type, daily_pet, Rad_Factor,
  EP30, PET_threshold) = empty_arrays(n, grid, grid1)
 
 create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass,  daily_pet,
@@ -110,15 +110,15 @@ for i in range(n):
     if (current_time - time_check) >= 1.:
         if yrs % 100 == 0:
             print 'Elapsed time = ', yrs, ' years'
-        VegType[yrs] = grid1.at_cell['vegetation__plant_functional_type']
-        WS_ = np.choose(VegType[yrs], WS)
+        veg_type[yrs] = grid1.at_cell['vegetation__plant_functional_type']
+        WS_ = np.choose(veg_type[yrs], WS)
         grid1.at_cell['vegetation__cumulative_water_stress'] = WS_ / Tg
         vegca.update()
         time_check = current_time
         WS = 0
         yrs += 1
 
-VegType[yrs] = grid1.at_cell['vegetation__plant_functional_type']
+veg_type[yrs] = grid1.at_cell['vegetation__plant_functional_type']
 
 Final_time = time.clock()
 Time_Consumed = (Final_time - Start_time) / 60. # in minutes
@@ -132,6 +132,6 @@ except OSError:
 finally:
     os.chdir('output')
 
-save('veg', Tb, Tr, P, VegType, yrs, Time_Consumed, Time)
+save('veg', Tb, Tr, P, veg_type, yrs, Time_Consumed, Time)
 
-plot('veg', grid1, VegType, yrs, yr_step=100)
+plot('veg', grid1, veg_type, yrs, yr_step=100)
