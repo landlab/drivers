@@ -22,15 +22,17 @@ def compose_veg_grid(grid, percent_bare=0.4, percent_grass=0.2,
                      percent_shrub=0.2, percent_tree=0.2):
     """Compose spatially distribute PFT."""
     no_cells = grid.number_of_cells
-    V = 3 * np.ones(grid.number_of_cells, dtype=int)
     shrub_point = int(percent_bare * no_cells)
     tree_point = int((percent_bare + percent_shrub) * no_cells)
     grass_point = int((1 - percent_grass) * no_cells)
-    V[shrub_point:tree_point] = 1
-    V[tree_point:grass_point] = 2
-    V[grass_point:] = 0
-    np.random.shuffle(V)
-    return V
+
+    veg_grid = np.full(grid.number_of_cells, BARE, dtype=int)
+    veg_grid[shrub_point:tree_point] = SHRUB
+    veg_grid[tree_point:grass_point] = TREE
+    veg_grid[grass_point:] = GRASS
+
+    np.random.shuffle(veg_grid)
+    return veg_grid
 
 
 def initialize(data, grid, grid1):
