@@ -36,11 +36,11 @@ fraction_wet = (data['doy__end_of_monsoon'] -
 fraction_dry = 1 - fraction_wet
 no_of_storms_wet = 8760 * fraction_wet / (data['mean_interstorm_wet'] +
                                           data['mean_storm_wet'])
-no_of_storms_dry = 8760 * (fraction_dry) / (data['mean_interstorm_dry'] +
-                                            data['mean_storm_dry'])
+no_of_storms_dry = 8760 * fraction_dry / (data['mean_interstorm_dry'] +
+                                          data['mean_storm_dry'])
 n = int(n_years * (no_of_storms_wet + no_of_storms_dry))
 
-(P, Tb, Tr, Time, veg_type, daily_pet, rad_factor,
+(precip, Tb, Tr, Time, veg_type, daily_pet, rad_factor,
  EP30, pet_threshold) = empty_arrays(n, grid, grid1)
 
 create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass,  daily_pet,
@@ -69,12 +69,12 @@ for i in range(n):
     # Wet Season - Jul to Sep - NA Monsoon
     if data['doy__start_of_monsoon'] <= Julian <= data['doy__end_of_monsoon']:
         precip_wet.update()
-        P[i] = precip_wet.storm_depth
+        precip[i] = precip_wet.storm_depth
         Tr[i] = precip_wet.storm_duration
         Tb[i] = precip_wet.interstorm_duration
     else: # for Dry season
         precip_dry.update()
-        P[i] = precip_dry.storm_depth
+        precip[i] = precip_dry.storm_depth
         Tr[i] = precip_dry.storm_duration
         Tb[i] = precip_dry.interstorm_duration
 
@@ -83,7 +83,7 @@ for i in range(n):
     grid.at_cell['surface__potential_evapotranspiration_30day_mean'] = EP30[Julian]
 
     # Assign spatial rainfall data
-    grid['cell']['rainfall__daily'] = P[i] * np.ones(grid.number_of_cells)
+    grid['cell']['rainfall__daily'] = precip[i] * np.ones(grid.number_of_cells)
 
     # Update soil moisture component
     current_time = soil_moisture.update(current_time, Tr=Tr[i], Tb=Tb[i])
@@ -132,6 +132,6 @@ except OSError:
 finally:
     os.chdir('output')
 
-save('veg', Tb, Tr, P, veg_type, yrs, Time_Consumed, Time)
+save('veg', Tb, Tr, precip, veg_type, yrs, Time_Consumed, Time)
 
 plot('veg', grid1, veg_type, yrs, yr_step=100)
