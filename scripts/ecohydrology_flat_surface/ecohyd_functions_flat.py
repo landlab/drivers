@@ -54,11 +54,11 @@ def initialize(data, grid, grid1):
         percent_tree=data['percent_tree_initial'])
 
     # Assign plant type for representative ecohydrologic simulations
-    grid.at_cell['vegetation__plant_functional_type'] = np.arange(0, 6)
-    grid1.at_node['topographic__elevation'] = (
-        1700. * np.ones(grid1.number_of_nodes))
-    grid['node']['topographic__elevation'] = (
-        1700. * np.ones(grid.number_of_nodes))
+    grid.at_cell['vegetation__plant_functional_type'] = np.arange(6)
+    grid1.at_node['topographic__elevation'] = np.full(grid1.number_of_nodes,
+                                                      1700.)
+    grid.at_node['topographic__elevation'] = np.full(grid.number_of_nodes,
+                                                     1700.)
     precip_dry = PrecipitationDistribution(
         mean_storm_duration=data['mean_storm_dry'],
         mean_interstorm_duration=data['mean_interstorm_dry'],
