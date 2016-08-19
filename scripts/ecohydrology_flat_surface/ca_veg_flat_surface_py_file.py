@@ -83,7 +83,7 @@ for i in range(n):
     grid.at_cell['surface__potential_evapotranspiration_30day_mean'] = EP30[Julian]
 
     # Assign spatial rainfall data
-    grid['cell']['rainfall__daily'] = precip[i] * np.ones(grid.number_of_cells)
+    grid.at_cell['rainfall__daily'] = np.full(grid.number_of_cell, precip[i])
 
     # Update soil moisture component
     current_time = soil_moisture.update(current_time, Tr=storm_dt[i],
@@ -103,7 +103,7 @@ for i in range(n):
                       Tr=storm_dt[i])
 
     # Update yearly cumulative water stress data
-    WS += grid['cell']['vegetation__water_stress'] * inter_storm_dt[i] / 24.
+    WS += grid.at_cell['vegetation__water_stress'] * inter_storm_dt[i] / 24.
 
     # Record time (optional)
     time_elapsed[i] = current_time
