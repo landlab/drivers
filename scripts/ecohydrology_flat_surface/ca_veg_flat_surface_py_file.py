@@ -125,12 +125,13 @@ Time_Consumed = (Final_time - Start_time) / 60. # in minutes
 print 'Time_consumed = ', Time_Consumed, ' minutes'
 
 # Saving
-sim = 'x'
 try:
-    os.mkdir(sim)
+    os.mkdir('output')
 except OSError:
-    os.chdir(sim)
-sim = sim + 'for_LL_paper_'
-save(sim, Tb, Tr, P, VegType, yrs, Time_Consumed, Time)
+    pass
+finally:
+    os.chdir('output')
 
-plot(sim, grid1, VegType, yrs, yr_step=100)
+save('veg', Tb, Tr, P, VegType, yrs, Time_Consumed, Time)
+
+plot('veg', grid1, VegType, yrs, yr_step=100)

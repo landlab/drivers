@@ -129,13 +129,13 @@ def create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass, daily_pet,
 
 
 def save(sim, Tb, Tr, P, VegType, yrs, Time_Consumed, Time):
-    np.save(sim + 'Tb', Tb)
-    np.save(sim + 'Tr', Tr)
-    np.save(sim + 'P', P)
-    np.save(sim + 'VegType', VegType)
-    np.save(sim + 'Years', yrs)
-    np.save(sim + 'Time_Consumed_minutes', Time_Consumed)
-    np.save(sim + 'CurrentTime', Time)
+    np.save(sim + '_Tb', Tb)
+    np.save(sim + '_Tr', Tr)
+    np.save(sim + '_P', P)
+    np.save(sim + '_VegType', VegType)
+    np.save(sim + '_Years', yrs)
+    np.save(sim + '_Time_Consumed_minutes', Time_Consumed)
+    np.save(sim + '_CurrentTime', Time)
 
 
 def plot(sim, grid, VegType, yrs, yr_step=10):
@@ -150,7 +150,7 @@ def plot(sim, grid, VegType, yrs, yr_step=10):
 
     # Plot images to make gif.
     for year in range(0, yrs, yr_step):
-        filename = 'Year = ' + "%05d" % year
+        filename = 'year_' + "%05d" % year
         pic += 1
         plt.figure(pic, figsize=(10, 8))
         imshow_grid(grid, VegType[year], values_at='cell', cmap=cmap,
@@ -161,7 +161,7 @@ def plot(sim, grid, VegType, yrs, yr_step=10):
         plt.ylabel('Y (m)', weight='bold', fontsize=18)
         plt.xticks(fontsize=14, weight='bold')
         plt.yticks(fontsize=14, weight='bold')
-        plt.savefig(sim+filename)
+        plt.savefig(sim + '_' + filename)
 
     grass_cov = np.empty(yrs)
     shrub_cov = np.empty(yrs)
@@ -189,4 +189,4 @@ def plot(sim, grid, VegType, yrs, yr_step=10):
     plt.xticks(fontsize=12, weight='bold')
     plt.yticks(fontsize=12, weight='bold')
     plt.legend(loc=0, prop={'size': 16, 'weight': 'bold'})
-    plt.savefig(sim+'percentCover')
+    plt.savefig(sim + '_percent_cover')
