@@ -63,11 +63,11 @@ for i in range(n):
     # Update objects
 
     # Calculate Day of Year (DOY)
-    Julian = np.int(np.floor((current_time - np.floor(current_time)) * 365.))
+    julian = np.int(np.floor((current_time - np.floor(current_time)) * 365.))
 
     # Generate seasonal storms
     # Wet Season - Jul to Sep - NA Monsoon
-    if data['doy__start_of_monsoon'] <= Julian <= data['doy__end_of_monsoon']:
+    if data['doy__start_of_monsoon'] <= julian <= data['doy__end_of_monsoon']:
         precip_wet.update()
         precip[i] = precip_wet.storm_depth
         storm_dt[i] = precip_wet.storm_duration
@@ -79,8 +79,8 @@ for i in range(n):
         inter_storm_dt[i] = precip_dry.interstorm_duration
 
     # Spatially distribute PET and its 30-day-mean (analogous to degree day)
-    grid.at_cell['surface__potential_evapotranspiration_rate'] = daily_pet[Julian]
-    grid.at_cell['surface__potential_evapotranspiration_30day_mean'] = EP30[Julian]
+    grid.at_cell['surface__potential_evapotranspiration_rate'] = daily_pet[julian]
+    grid.at_cell['surface__potential_evapotranspiration_30day_mean'] = EP30[julian]
 
     # Assign spatial rainfall data
     grid.at_cell['rainfall__daily'] = np.full(grid.number_of_cell, precip[i])
@@ -90,8 +90,8 @@ for i in range(n):
                                         Tb=inter_storm_dt[i])
 
     # Decide whether its growing season or not
-    if Julian != 364:
-        if EP30[Julian + 1, 0] > EP30[Julian, 0]:
+    if julian != 364:
+        if EP30[julian + 1, 0] > EP30[julian, 0]:
             pet_threshold = 1
             # 1 corresponds to ETThresholdup (begin growing season)
         else:
