@@ -40,11 +40,11 @@ no_of_storms_dry = 8760 * (fraction_dry) / (data['mean_interstorm_dry'] +
                                             data['mean_storm_dry'])
 n = int(n_years * (no_of_storms_wet + no_of_storms_dry))
 
-(P, Tb, Tr, Time, veg_type, daily_pet, Rad_Factor,
+(P, Tb, Tr, Time, veg_type, daily_pet, rad_factor,
  EP30, PET_threshold) = empty_arrays(n, grid, grid1)
 
 create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass,  daily_pet,
-                  Rad_Factor, EP30, grid)
+                  rad_factor, EP30, grid)
 
 # Represent current time in years
 current_time = 0 # Start from first day of Jan
