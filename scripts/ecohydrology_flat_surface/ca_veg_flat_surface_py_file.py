@@ -55,7 +55,7 @@ wallclock_start = time.clock() # Recording time taken for simulation
 # declaring few variables that will be used in the storm loop
 time_check = 0. # Buffer to store current_time at previous storm
 yrs = 0 # Keep track of number of years passed
-WS = 0. # Buffer for Water Stress
+water_stress = 0. # Buffer for Water Stress
 Tg = 270 # Growing season in days
 
 # Run storm Loop
@@ -103,7 +103,8 @@ for i in range(n):
                       Tr=storm_dt[i])
 
     # Update yearly cumulative water stress data
-    WS += grid.at_cell['vegetation__water_stress'] * inter_storm_dt[i] / 24.
+    water_stress += (grid.at_cell['vegetation__water_stress'] *
+                     inter_storm_dt[i] / 24.)
 
     # Record time (optional)
     time_elapsed[i] = current_time
@@ -113,11 +114,11 @@ for i in range(n):
         if yrs % 100 == 0:
             print 'Elapsed time = ', yrs, ' years'
         veg_type[yrs] = grid1.at_cell['vegetation__plant_functional_type']
-        WS_ = np.choose(veg_type[yrs], WS)
+        WS_ = np.choose(veg_type[yrs], water_stress)
         grid1.at_cell['vegetation__cumulative_water_stress'] = WS_ / Tg
         vegca.update()
         time_check = current_time
-        WS = 0
+        water_stress = 0
         yrs += 1
 
 veg_type[yrs] = grid1.at_cell['vegetation__plant_functional_type']
