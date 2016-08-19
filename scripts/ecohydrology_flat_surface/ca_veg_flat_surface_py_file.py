@@ -40,7 +40,7 @@ no_of_storms_dry = 8760 * fraction_dry / (data['mean_interstorm_dry'] +
                                           data['mean_storm_dry'])
 n = int(n_years * (no_of_storms_wet + no_of_storms_dry))
 
-(precip, Tb, Tr, Time, veg_type, daily_pet, rad_factor,
+(precip, inter_storm_dt, Tr, Time, veg_type, daily_pet, rad_factor,
  EP30, pet_threshold) = empty_arrays(n, grid, grid1)
 
 create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass,  daily_pet,
@@ -71,12 +71,12 @@ for i in range(n):
         precip_wet.update()
         precip[i] = precip_wet.storm_depth
         Tr[i] = precip_wet.storm_duration
-        Tb[i] = precip_wet.interstorm_duration
+        inter_storm_dt[i] = precip_wet.interstorm_duration
     else: # for Dry season
         precip_dry.update()
         precip[i] = precip_dry.storm_depth
         Tr[i] = precip_dry.storm_duration
-        Tb[i] = precip_dry.interstorm_duration
+        inter_storm_dt[i] = precip_dry.interstorm_duration
 
     # Spatially distribute PET and its 30-day-mean (analogous to degree day)
     grid.at_cell['surface__potential_evapotranspiration_rate'] = daily_pet[Julian]
@@ -86,7 +86,8 @@ for i in range(n):
     grid['cell']['rainfall__daily'] = precip[i] * np.ones(grid.number_of_cells)
 
     # Update soil moisture component
-    current_time = soil_moisture.update(current_time, Tr=Tr[i], Tb=Tb[i])
+    current_time = soil_moisture.update(current_time, Tr=Tr[i],
+                                        Tb=inter_storm_dt[i])
 
     # Decide whether its growing season or not
     if Julian != 364:
@@ -98,10 +99,11 @@ for i in range(n):
             # 0 corresponds to ETThresholddown (end growing season)
 
     # Update vegetation component
-    vegetation.update(PETThreshold_switch=pet_threshold, Tb=Tb[i], Tr=Tr[i])
+    vegetation.update(PETThreshold_switch=pet_threshold, Tb=inter_storm_dt[i],
+                      Tr=Tr[i])
 
     # Update yearly cumulative water stress data
-    WS += (grid['cell']['vegetation__water_stress']) * Tb[i] / 24.
+    WS += grid['cell']['vegetation__water_stress'] * inter_storm_dt[i] / 24.
 
     # Record time (optional)
     Time[i] = current_time
@@ -132,6 +134,6 @@ except OSError:
 finally:
     os.chdir('output')
 
-save('veg', Tb, Tr, precip, veg_type, yrs, Time_Consumed, Time)
+save('veg', inter_storm_dt, Tr, precip, veg_type, yrs, Time_Consumed, Time)
 
 plot('veg', grid1, veg_type, yrs, yr_step=100)

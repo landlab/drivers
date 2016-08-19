@@ -92,7 +92,7 @@ def initialize(data, grid, grid1):
 
 def empty_arrays(n, grid, grid1):
     precip = np.empty(n) # Record precipitation
-    Tb = np.empty(n) # Record inter storm duration
+    inter_storm_dt = np.empty(n) # Record inter storm duration
     Tr = np.empty(n) # Record storm duration
     Time = np.empty(n) # To record time elapsed from the start of simulation
 
@@ -104,8 +104,8 @@ def empty_arrays(n, grid, grid1):
 
     # 30 day average PET to determine season
     pet_threshold = 0  # Initializing pet_threshold to ETThresholddown
-    return (precip, Tb, Tr, Time, veg_type, daily_pet, rad_factor, EP30,
-            pet_threshold)
+    return (precip, inter_storm_dt, Tr, Time, veg_type, daily_pet,
+            rad_factor, EP30, pet_threshold)
 
 
 def create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass, daily_pet,
@@ -129,8 +129,8 @@ def create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass, daily_pet,
             EP30[i] = np.mean(daily_pet[i - 30:i], axis=0)
 
 
-def save(sim, Tb, Tr, precip, veg_type, yrs, Time_Consumed, Time):
-    np.save(sim + '_Tb', Tb)
+def save(sim, inter_storm_dt, Tr, precip, veg_type, yrs, Time_Consumed, Time):
+    np.save(sim + '_Tb', inter_storm_dt)
     np.save(sim + '_Tr', Tr)
     np.save(sim + '_P', precip)
     np.save(sim + '_VegType', veg_type)
