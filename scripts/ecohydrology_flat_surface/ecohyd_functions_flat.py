@@ -130,13 +130,13 @@ def create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass, daily_pet,
 
 
 def save(sim, inter_storm_dt, storm_dt, precip, veg_type, yrs,
-         Time_Consumed, time_elapsed):
+         walltime, time_elapsed):
     np.save(sim + '_Tb', inter_storm_dt)
     np.save(sim + '_Tr', storm_dt)
     np.save(sim + '_P', precip)
     np.save(sim + '_VegType', veg_type)
     np.save(sim + '_Years', yrs)
-    np.save(sim + '_Time_Consumed_minutes', Time_Consumed)
+    np.save(sim + '_Time_Consumed_minutes', walltime)
     np.save(sim + '_CurrentTime', time_elapsed)
 
 

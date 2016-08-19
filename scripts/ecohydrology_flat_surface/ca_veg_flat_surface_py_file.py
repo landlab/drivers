@@ -50,7 +50,7 @@ create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass,  daily_pet,
 current_time = 0 # Start from first day of Jan
 
 # Keep track of run time for simulation - optional
-Start_time = time.clock() # Recording time taken for simulation
+wallclock_start = time.clock() # Recording time taken for simulation
 
 # declaring few variables that will be used in the storm loop
 time_check = 0. # Buffer to store current_time at previous storm
@@ -122,9 +122,9 @@ for i in range(n):
 
 veg_type[yrs] = grid1.at_cell['vegetation__plant_functional_type']
 
-Final_time = time.clock()
-Time_Consumed = (Final_time - Start_time) / 60. # in minutes
-print 'Time_consumed = ', Time_Consumed, ' minutes'
+wallclock_stop = time.clock()
+walltime = (wallclock_stop - wallclock_start) / 60. # in minutes
+print 'Time_consumed = ', walltime, ' minutes'
 
 # Saving
 try:
@@ -135,6 +135,6 @@ finally:
     os.chdir('output')
 
 save('veg', inter_storm_dt, storm_dt, precip, veg_type, yrs,
-     Time_Consumed, time_elapsed)
+     walltime, time_elapsed)
 
 plot('veg', grid1, veg_type, yrs, yr_step=100)
