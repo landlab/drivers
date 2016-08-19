@@ -94,7 +94,7 @@ def empty_arrays(n, grid, grid1):
     precip = np.empty(n) # Record precipitation
     inter_storm_dt = np.empty(n) # Record inter storm duration
     storm_dt = np.empty(n) # Record storm duration
-    Time = np.empty(n) # To record time elapsed from the start of simulation
+    time_elapsed = np.empty(n) # To record time elapsed from the start of simulation
 
     # Cumulative Water Stress
     veg_type = np.empty([n / 55, grid1.number_of_cells], dtype=int)
@@ -104,8 +104,8 @@ def empty_arrays(n, grid, grid1):
 
     # 30 day average PET to determine season
     pet_threshold = 0  # Initializing pet_threshold to ETThresholddown
-    return (precip, inter_storm_dt, storm_dt, Time, veg_type, daily_pet,
-            rad_factor, EP30, pet_threshold)
+    return (precip, inter_storm_dt, storm_dt, time_elapsed, veg_type,
+            daily_pet, rad_factor, EP30, pet_threshold)
 
 
 def create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass, daily_pet,
@@ -130,14 +130,14 @@ def create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass, daily_pet,
 
 
 def save(sim, inter_storm_dt, storm_dt, precip, veg_type, yrs,
-         Time_Consumed, Time):
+         Time_Consumed, time_elapsed):
     np.save(sim + '_Tb', inter_storm_dt)
     np.save(sim + '_Tr', storm_dt)
     np.save(sim + '_P', precip)
     np.save(sim + '_VegType', veg_type)
     np.save(sim + '_Years', yrs)
     np.save(sim + '_Time_Consumed_minutes', Time_Consumed)
-    np.save(sim + '_CurrentTime', Time)
+    np.save(sim + '_CurrentTime', time_elapsed)
 
 
 def plot(sim, grid, veg_type, yrs, yr_step=10):

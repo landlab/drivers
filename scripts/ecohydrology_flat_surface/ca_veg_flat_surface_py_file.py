@@ -40,8 +40,8 @@ no_of_storms_dry = 8760 * fraction_dry / (data['mean_interstorm_dry'] +
                                           data['mean_storm_dry'])
 n = int(n_years * (no_of_storms_wet + no_of_storms_dry))
 
-(precip, inter_storm_dt, storm_dt, Time, veg_type, daily_pet, rad_factor,
- EP30, pet_threshold) = empty_arrays(n, grid, grid1)
+(precip, inter_storm_dt, storm_dt, time_elapsed, veg_type, daily_pet,
+ rad_factor, EP30, pet_threshold) = empty_arrays(n, grid, grid1)
 
 create_pet_lookup(radiation, pet_tree, pet_shrub, pet_grass,  daily_pet,
                   rad_factor, EP30, grid)
@@ -106,7 +106,7 @@ for i in range(n):
     WS += grid['cell']['vegetation__water_stress'] * inter_storm_dt[i] / 24.
 
     # Record time (optional)
-    Time[i] = current_time
+    time_elapsed[i] = current_time
 
     # Update spatial PFTs with Cellular Automata rules
     if (current_time - time_check) >= 1.:
@@ -135,6 +135,6 @@ finally:
     os.chdir('output')
 
 save('veg', inter_storm_dt, storm_dt, precip, veg_type, yrs,
-     Time_Consumed, Time)
+     Time_Consumed, time_elapsed)
 
 plot('veg', grid1, veg_type, yrs, yr_step=100)
